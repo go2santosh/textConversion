@@ -3,12 +3,17 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Text Converter</title>
+    <title>Text Conversion Utility</title>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <h1>Text Converter</h1>
+    <h1>Text Conversion Utility</h1>
     <table>
+      <tr>
+        <td>
+          <button onclick="clearAll()">Clear All</button>
+        </td>
+      </tr>
       <tr>
         <td>
           <label>Original Text</label>
@@ -23,7 +28,26 @@
         <td>
           <button onclick="toLowercase()">Lowercase</button>
           <button onclick="toUppercase()">Uppercase</button>
-          <button onclick="camelToUnderscore()">Camel to Underscore</button>
+          <button onclick="toTitlecase()">Titlecase</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <button onclick="camelToSpace()">Camel to Space</button>
+          <button onclick="spaceToCamel()">Space to Camel</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <button onclick="spaceToUnderscore()">Space to Underscore</button>
+          <button onclick="underscoreToSpace()">Underscore to Space</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <textarea id="conversionScript" cols="80" rows="1" placeholder="Example: Camel to Space > Move Converted to Original > Space to Underscore"></textarea>
+          <br/>
+          <button onclick="applyConversion()">Apply Conversion</button>
         </td>
       </tr>
       <tr>
@@ -43,6 +67,10 @@
       </tr>
     </table>
     <script>
+      function clearAll() {
+        document.getElementById('originaltext').value = "";
+        document.getElementById('convertedtext').value = "";
+      }
       function toUppercase() {
         var originaltext = document.getElementById('originaltext').value;
         var convertedtext = originaltext.toUpperCase();
@@ -53,13 +81,68 @@
         var convertedtext = originaltext.toLowerCase();
         document.getElementById('convertedtext').value = convertedtext;
       }
+      function toTitlecase() {
+        var originaltext = document.getElementById('originaltext').value;
+        var convertedtext = originaltext.replace(/\b\w/g, chr => chr.toUpperCase());
+        document.getElementById('convertedtext').value = convertedtext;
+      }
       function moveConvertedToOriginal() {
         document.getElementById('originaltext').value = document.getElementById('convertedtext').value;
         document.getElementById('convertedtext').value = "";
       }
-      function camelToUnderscore() {
+      function camelToSpace() {
         var originaltext = document.getElementById('originaltext').value;
-        document.getElementById('convertedtext').value = originaltext.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
+        document.getElementById('convertedtext').value = originaltext.replace(/([A-Z])/g, function($1){return " "+$1.toLowerCase();});
+      }
+      function spaceToCamel() {
+        var originaltext = document.getElementById('originaltext').value;
+        var convertedText = originaltext.replace(/\s[a-z]/g, function($1){return $1.toUpperCase().replace(' ','');});
+        document.getElementById('convertedtext').value = convertedText;
+      }
+      function spaceToUnderscore() {
+        var originaltext = document.getElementById('originaltext').value;
+        var convertedText = originaltext.replace(/\s+/g, "_");
+        document.getElementById('convertedtext').value = convertedText;
+      }
+      function underscoreToSpace() {
+        var originaltext = document.getElementById('originaltext').value;
+        var convertedText = originaltext.replace(/_+/g, " ");
+        document.getElementById('convertedtext').value = convertedText;
+      }
+      function applyConversion() {
+        var conversionScript = document.getElementById('conversionScript').value;
+        var commands = conversionScript.split(">");
+        for (i=0; i<commands.length; i++) {
+          var command = commands[i].trim();
+          switch(command) {
+            case "Lowercase":
+              toLowercase();
+              break;
+            case "Uppercase":
+              toUppercase();
+              break;
+            case "Titlecase":
+              toTitlecase();
+              break;
+            case "Camel to Space":
+              camelToSpace();
+              break;
+            case "Space to Camel":
+              spaceToCamel();
+              break;
+            case "Space to Underscore":
+              spaceToUnderscore();
+              break;
+            case "Underscore to Space":
+              underscoreToSpace();
+              break;
+            case "Move Converted to Original":
+              moveConvertedToOriginal();
+              break;
+            default:
+              //do nothing
+          }
+        }
       }
     </script>
   </body>
