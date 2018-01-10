@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Text Converter</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>Text Converter</h1>
+    <table>
+      <tr>
+        <td>
+          <label>Original Text</label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <textarea id="originaltext" cols="80" rows="4"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <button onclick="toLowercase()">Lowercase</button>
+          <button onclick="toUppercase()">Uppercase</button>
+          <button onclick="camelToUnderscore()">Camel to Underscore</button>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Converted Text</label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <textarea id="convertedtext" cols="80" rows="4"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <button onclick="moveConvertedToOriginal()">Move Converted to Original</button>
+        </td>
+      </tr>
+    </table>
+    <script>
+      function toUppercase() {
+        var originaltext = document.getElementById('originaltext').value;
+        var convertedtext = originaltext.toUpperCase();
+        document.getElementById('convertedtext').value = convertedtext;
+      }
+      function toLowercase() {
+        var originaltext = document.getElementById('originaltext').value;
+        var convertedtext = originaltext.toLowerCase();
+        document.getElementById('convertedtext').value = convertedtext;
+      }
+      function moveConvertedToOriginal() {
+        document.getElementById('originaltext').value = document.getElementById('convertedtext').value;
+        document.getElementById('convertedtext').value = "";
+      }
+      function camelToUnderscore() {
+        var originaltext = document.getElementById('originaltext').value;
+        document.getElementById('convertedtext').value = originaltext.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
+      }
+    </script>
+  </body>
+</html>
